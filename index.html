@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#c9a84c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ramadan 2026">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Ramadan 2026 – Afrose's Alerts</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --deep: #0a0e1a;
+    --navy: #0d1b2a;
+    --teal: #1a4a5a;
+    --cream: #f5ead0;
+    --green: #2a7a2a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Stars */
+  .stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .star {
+    position:absolute; background:white; border-radius:50%;
+    animation: twinkle var(--dur,3s) ease-in-out infinite var(--delay,0s);
+  }
+  @keyframes twinkle {
+    0%,100%{opacity:0.1;transform:scale(1)}
+    50%{opacity:0.9;transform:scale(1.4)}
+  }
+
+  .container { position:relative; z-index:1; max-width:480px; margin:0 auto; padding:16px 16px 60px; }
+
+  /* Install Banner */
+  .install-banner {
+    display:none;
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(26,74,90,0.4));
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    animation: fadeDown 0.5s ease both;
+  }
+  .install-banner.show { display:block; }
+  .install-banner p { font-size:13px; opacity:0.8; margin-bottom:8px; }
+  .install-btn {
+    background: var(--gold);
+    color: var(--deep);
+    border:none;
+    border-radius:10px;
+    padding: 8px 20px;
+    font-family:'Cinzel',serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    letter-spacing:1px;
+  }
+
+  /* Header */
+  .header { text-align:center; padding:20px 0 16px; animation:fadeDown 0.8s ease both; }
+  @keyframes fadeDown {
+    from{opacity:0;transform:translateY(-18px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .moon-icon {
+    font-size:50px; display:block; margin-bottom:6px;
+    filter:drop-shadow(0 0 18px var(--gold));
+    animation:float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  h1 {
+    font-family:'Cinzel',serif; font-size:26px; font-weight:800; letter-spacing:3px;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold),#8b6914);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .subtitle { font-family:'Amiri',serif; font-size:17px; color:var(--gold); opacity:0.8; margin-top:3px; }
+  .location-badge {
+    display:inline-block; margin-top:8px;
+    background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3);
+    border-radius:20px; padding:4px 14px; font-size:11px; color:var(--gold); letter-spacing:1px;
+  }
+  .name-greeting {
+    margin-top:12px; font-family:'Amiri',serif; font-size:19px;
+    color:var(--gold-light); letter-spacing:1px;
+  }
+  .name-greeting span {
+    font-weight:700; color:var(--gold);
+    text-shadow:0 0 14px rgba(201,168,76,0.6);
+  }
+
+  /* Clock */
+  .live-clock { text-align:center; margin:12px 0; animation:fadeDown 0.8s 0.2s ease both; }
+  .clock-time {
+    font-family:'Cinzel',serif; font-size:40px; font-weight:600;
+    color:white; letter-spacing:4px; text-shadow:0 0 30px rgba(201,168,76,0.4);
+  }
+  .clock-date { font-size:11px; color:rgba(245,234,208,0.45); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+
+  /* Today card */
+  .today-card {
+    background:linear-gradient(135deg,rgba(13,27,42,0.9),rgba(26,74,90,0.6));
+    border:1px solid rgba(201,168,76,0.25); border-radius:20px;
+    padding:18px; margin:12px 0; animation:fadeDown 0.8s 0.3s ease both;
+    position:relative; overflow:hidden;
+  }
+  .today-card::before {
+    content:''; position:absolute; top:-40px; right:-40px;
+    width:120px; height:120px;
+    background:radial-gradient(circle,rgba(201,168,76,0.1),transparent 70%);
+    pointer-events:none;
+  }
+  .today-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); opacity:0.65; margin-bottom:12px; }
+  .timings-row { display:flex; gap:10px; }
+  .timing-box { flex:1; border-radius:14px; padding:14px 10px; text-align:center; }
+  .timing-box.sahar { background:linear-gradient(135deg,rgba(76,138,201,0.2),rgba(76,138,201,0.04)); border:1px solid rgba(76,138,201,0.4); }
+  .timing-box.iftar { background:linear-gradient(135deg,rgba(201,76,76,0.2),rgba(201,76,76,0.04)); border:1px solid rgba(201,76,76,0.4); }
+  .timing-icon { font-size:20px; margin-bottom:5px; }
+  .timing-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; opacity:0.55; margin-bottom:3px; }
+  .timing-time { font-family:'Cinzel',serif; font-size:21px; font-weight:600; }
+  .timing-box.sahar .timing-time { color:#7ab4f0; }
+  .timing-box.iftar .timing-time { color:#f07a7a; }
+  .timing-sub { font-size:9px; opacity:0.45; margin-top:2px; }
+
+  /* Countdown */
+  .countdown-bar {
+    margin-top:12px; background:rgba(255,255,255,0.05);
+    border-radius:10px; padding:11px 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .countdown-label { font-size:11px; opacity:0.55; }
+  .countdown-timer { font-family:'Cinzel',serif; font-size:17px; font-weight:600; color:var(--gold-light); flex:1; text-align:right; }
+  .countdown-event { font-size:10px; opacity:0.5; text-align:right; }
+
+  /* Section title */
+  .section-title {
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--gold); opacity:0.65;
+    margin:20px 0 10px; animation:fadeDown 0.8s 0.4s ease both;
+  }
+
+  /* Alert Controls */
+  .alert-controls {
+    background:rgba(13,27,42,0.85); border:1px solid rgba(201,168,76,0.15);
+    border-radius:18px; padding:18px; animation:fadeDown 0.8s 0.5s ease both;
+  }
+  .alert-row { display:flex; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06); gap:12px; }
+  .alert-row:last-child { border-bottom:none; padding-bottom:0; }
+  .alert-icon { font-size:20px; flex-shrink:0; }
+  .alert-info { flex:1; }
+  .alert-name { font-size:14px; font-weight:700; }
+  .alert-desc { font-size:11px; opacity:0.5; margin-top:1px; }
+
+  /* Toggle */
+  .toggle { position:relative; width:48px; height:26px; cursor:pointer; flex-shrink:0; }
+  .toggle input { opacity:0; width:0; height:0; }
+  .toggle-slider {
+    position:absolute; inset:0; background:rgba(255,255,255,0.1);
+    border-radius:13px; transition:0.3s; border:1px solid rgba(255,255,255,0.15);
+  }
+  .toggle-slider::before {
+    content:''; position:absolute; width:20px; height:20px;
+    left:3px; top:2px; background:white; border-radius:50%;
+    transition:0.3s; box-shadow:0 1px 4px rgba(0,0,0,0.4);
+  }
+  .toggle input:checked + .toggle-slider { background:linear-gradient(135deg,var(--gold),#8b6914); border-color:var(--gold); }
+  .toggle input:checked + .toggle-slider::before { transform:translateX(22px); }
+
+  .advance-row { display:flex; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06); gap:10px; }
+  .advance-label { font-size:13px; flex:1; opacity:0.7; }
+  select {
+    background:rgba(255,255,255,0.08); border:1px solid rgba(201,168,76,0.3);
+    color:var(--cream); border-radius:10px; padding:6px 12px; font-size:13px;
+    cursor:pointer; font-family:'Lato',sans-serif; appearance:none; -webkit-appearance:none;
+  }
+
+  /* Status card */
+  .status-card {
+    background:rgba(13,27,42,0.6); border:1px solid rgba(201,168,76,0.1);
+    border-radius:14px; padding:14px 16px; margin-top:12px;
+    animation:fadeDown 0.8s 0.55s ease both;
+  }
+  .status-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .status-row:last-child { margin-bottom:0; }
+  .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .status-dot.on { background:#4caf50; box-shadow:0 0 8px #4caf50; animation:pulse 2s ease-in-out infinite; }
+  .status-dot.off { background:#666; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .status-text { font-size:12px; opacity:0.75; }
+  .status-time { font-family:'Cinzel',serif; font-size:13px; color:var(--gold); margin-left:auto; }
+
+  /* Enable button */
+  .enable-btn {
+    width:100%; margin-top:14px; padding:16px;
+    border:none; border-radius:14px;
+    background:linear-gradient(135deg,var(--gold),#8b6914);
+    color:var(--deep); font-family:'Cinzel',serif; font-size:14px;
+    font-weight:700; letter-spacing:2px; cursor:pointer;
+    transition:0.3s; text-transform:uppercase;
+    box-shadow:0 4px 20px rgba(201,168,76,0.3);
+    animation:fadeDown 0.8s 0.6s ease both;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .enable-btn:active { transform:scale(0.97); }
+
+  /* Schedule */
+  .roza-grid { display:grid; gap:6px; }
+  .roza-item {
+    background:rgba(13,27,42,0.7); border:1px solid rgba(201,168,76,0.08);
+    border-radius:12px; padding:11px 14px;
+    display:flex; align-items:center; gap:10px;
+    transition:0.2s;
+  }
+  .roza-item.today {
+    background:linear-gradient(135deg,rgba(201,168,76,0.13),rgba(26,74,90,0.3));
+    border-color:rgba(201,168,76,0.4);
+  }
+  .roza-num { font-family:'Cinzel',serif; font-size:15px; font-weight:800; color:var(--gold); width:28px; text-align:center; flex-shrink:0; }
+  .roza-date { font-size:11px; opacity:0.55; flex:1; }
+  .roza-times { display:flex; gap:10px; font-family:'Cinzel',serif; font-size:11px; }
+  .roza-sahar { color:#7ab4f0; }
+  .roza-iftar { color:#f07a7a; }
+  .today-tag { background:var(--gold); color:var(--deep); font-size:8px; font-weight:700; letter-spacing:1px; padding:2px 6px; border-radius:6px; text-transform:uppercase; }
+
+  /* Toast */
+  .toast {
+    position:fixed; bottom:24px; left:50%;
+    transform:translateX(-50%) translateY(120px);
+    background:rgba(13,27,42,0.97); border:1px solid var(--gold);
+    border-radius:14px; padding:12px 22px;
+    font-size:13px; color:var(--cream); z-index:999;
+    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    white-space:nowrap; box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    pointer-events:none;
+  }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(201,168,76,0.3); border-radius:4px; }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+  <!-- Install Banner (shown on mobile if not installed) -->
+  <div class="install-banner" id="installBanner">
+    <p>📲 Install this app on your phone for background alerts!</p>
+    <button class="install-btn" id="installBtn" onclick="installPWA()">📥 Add to Home Screen</button>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="moon-icon">🌙</span>
+    <h1>RAMADAN 1447</h1>
+    <div class="subtitle">رمضان مبارك</div>
+    <span class="location-badge">📍 Krishnagiri District, Tamil Nadu</span>
+    <div class="name-greeting">🤲 Ramadan Mubarak, <span>Afrose</span></div>
+  </div>
+
+  <!-- Live Clock -->
+  <div class="live-clock">
+    <div class="clock-time" id="clockTime">--:--:--</div>
+    <div class="clock-date" id="clockDate"></div>
+  </div>
+
+  <!-- Today Card -->
+  <div class="today-card">
+    <div class="today-label" id="todayLabel">Today's Timings</div>
+    <div class="timings-row">
+      <div class="timing-box sahar">
+        <div class="timing-icon">🌅</div>
+        <div class="timing-label">Sahar Ends</div>
+        <div class="timing-time" id="saharTime">--:--</div>
+        <div class="timing-sub">Fajr: <span id="fajarTime">--:--</span></div>
+      </div>
+      <div class="timing-box iftar">
+        <div class="timing-icon">🌇</div>
+        <div class="timing-label">Iftar Begins</div>
+        <div class="timing-time" id="iftarTime">--:--</div>
+        <div class="timing-sub">Break your fast</div>
+      </div>
+    </div>
+    <div class="countdown-bar">
+      <div>
+        <div class="countdown-label">Next Event</div>
+        <div class="countdown-event" id="nextEvent">--</div>
+      </div>
+      <div class="countdown-timer" id="countdown">--:--:--</div>
+    </div>
+  </div>
+
+  <!-- Alert Settings -->
+  <div class="section-title">🔔 Alert Settings</div>
+  <div class="alert-controls">
+    <div class="alert-row">
+      <div class="alert-icon">🌅</div>
+      <div class="alert-info">
+        <div class="alert-name">Sahar Alert</div>
+        <div class="alert-desc">Notify before Sahar ends</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="saharToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="alert-row">
+      <div class="alert-icon">🌇</div>
+      <div class="alert-info">
+        <div class="alert-name">Iftar Alert</div>
+        <div class="alert-desc">Notify when Iftar begins</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="iftarToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="advance-row">
+      <div class="advance-label">⏱ Alert before</div>
+      <select id="advanceTime">
+        <option value="0">At time</option>
+        <option value="5" selected>5 min before</option>
+        <option value="10">10 min before</option>
+        <option value="15">15 min before</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Status display -->
+  <div class="status-card" id="statusCard" style="display:none">
+    <div class="status-row" id="saharStatus">
+      <div class="status-dot off" id="saharDot"></div>
+      <div class="status-text">Sahar alert</div>
+      <div class="status-time" id="saharAlertTime">--</div>
+    </div>
+    <div class="status-row" id="iftarStatus">
+      <div class="status-dot off" id="iftarDot"></div>
+      <div class="status-text">Iftar alert</div>
+      <div class="status-time" id="iftarAlertTime">--</div>
+    </div>
+  </div>
+
+  <button class="enable-btn" id="enableBtn" onclick="requestNotifications()">
+    🔔 Enable Phone Alerts
+  </button>
+  <div style="text-align:center; font-size:11px; opacity:0.4; margin-top:8px;" id="permNote">
+    Tap to receive Sahar &amp; Iftar notifications on your phone
+  </div>
+
+  <!-- Schedule -->
+  <div class="section-title">📅 Full Ramadan Schedule</div>
+  <div class="roza-grid" id="rozaGrid"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────
+const SCHEDULE = [
+  {roza:1,  date:'2026-02-19', sahar:'05:24', fajar:'05:27', iftar:'18:27'},
+  {roza:2,  date:'2026-02-20', sahar:'05:24', fajar:'05:27', iftar:'18:27'},
+  {roza:3,  date:'2026-02-21', sahar:'05:23', fajar:'05:26', iftar:'18:27'},
+  {roza:4,  date:'2026-02-22', sahar:'05:23', fajar:'05:26', iftar:'18:27'},
+  {roza:5,  date:'2026-02-23', sahar:'05:22', fajar:'05:25', iftar:'18:28'},
+  {roza:6,  date:'2026-02-24', sahar:'05:22', fajar:'05:25', iftar:'18:28'},
+  {roza:7,  date:'2026-02-25', sahar:'05:21', fajar:'05:24', iftar:'18:28'},
+  {roza:8,  date:'2026-02-26', sahar:'05:21', fajar:'05:24', iftar:'18:28'},
+  {roza:9,  date:'2026-02-27', sahar:'05:20', fajar:'05:23', iftar:'18:29'},
+  {roza:10, date:'2026-02-28', sahar:'05:20', fajar:'05:23', iftar:'18:29'},
+  {roza:11, date:'2026-03-01', sahar:'05:19', fajar:'05:22', iftar:'18:29'},
+  {roza:12, date:'2026-03-02', sahar:'05:19', fajar:'05:22', iftar:'18:29'},
+  {roza:13, date:'2026-03-03', sahar:'05:18', fajar:'05:21', iftar:'18:29'},
+  {roza:14, date:'2026-03-04', sahar:'05:18', fajar:'05:21', iftar:'18:29'},
+  {roza:15, date:'2026-03-05', sahar:'05:17', fajar:'05:20', iftar:'18:30'},
+  {roza:16, date:'2026-03-06', sahar:'05:17', fajar:'05:20', iftar:'18:30'},
+  {roza:17, date:'2026-03-07', sahar:'05:16', fajar:'05:19', iftar:'18:30'},
+  {roza:18, date:'2026-03-08', sahar:'05:16', fajar:'05:19', iftar:'18:30'},
+  {roza:19, date:'2026-03-09', sahar:'05:15', fajar:'05:18', iftar:'18:30'},
+  {roza:20, date:'2026-03-10', sahar:'05:15', fajar:'05:18', iftar:'18:30'},
+  {roza:21, date:'2026-03-11', sahar:'05:14', fajar:'05:17', iftar:'18:30'},
+  {roza:22, date:'2026-03-12', sahar:'05:14', fajar:'05:17', iftar:'18:30'},
+  {roza:23, date:'2026-03-13', sahar:'05:13', fajar:'05:16', iftar:'18:30'},
+  {roza:24, date:'2026-03-14', sahar:'05:13', fajar:'05:16', iftar:'18:30'},
+  {roza:25, date:'2026-03-15', sahar:'05:11', fajar:'05:14', iftar:'18:31'},
+  {roza:26, date:'2026-03-16', sahar:'05:11', fajar:'05:14', iftar:'18:31'},
+  {roza:27, date:'2026-03-17', sahar:'05:10', fajar:'05:13', iftar:'18:31'},
+  {roza:28, date:'2026-03-18', sahar:'05:10', fajar:'05:13', iftar:'18:31'},
+  {roza:29, date:'2026-03-19', sahar:'05:09', fajar:'05:12', iftar:'18:31'},
+  {roza:30, date:'2026-03-20', sahar:'05:09', fajar:'05:12', iftar:'18:31'},
+];
+
+// ── Stars ─────────────────────────────────────────────────────────
+const starsEl = document.getElementById('stars');
+for(let i=0;i<70;i++){
+  const s=document.createElement('div'); s.className='star';
+  const sz=Math.random()*2.5+0.5;
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--delay:${Math.random()*5}s`;
+  starsEl.appendChild(s);
+}
+
+// ── Today ─────────────────────────────────────────────────────────
+function getTodayData() {
+  const t = new Date().toISOString().split('T')[0];
+  return SCHEDULE.find(d=>d.date===t) || SCHEDULE[0];
+}
+const TODAY = getTodayData();
+
+document.getElementById('saharTime').textContent = TODAY.sahar;
+document.getElementById('fajarTime').textContent = TODAY.fajar;
+document.getElementById('iftarTime').textContent = TODAY.iftar;
+document.getElementById('todayLabel').textContent =
+  `Roza ${TODAY.roza} — ${new Date(TODAY.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'})}`;
+
+// ── Clock ─────────────────────────────────────────────────────────
+function tick() {
+  const n=new Date();
+  document.getElementById('clockTime').textContent =
+    [n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+  document.getElementById('clockDate').textContent =
+    n.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+setInterval(tick,1000); tick();
+
+// ── Countdown ─────────────────────────────────────────────────────
+function toSec(t){const[h,m]=t.split(':').map(Number);return h*3600+m*60;}
+function countdown() {
+  const n=new Date(), ns=n.getHours()*3600+n.getMinutes()*60+n.getSeconds();
+  const ss=toSec(TODAY.sahar), is=toSec(TODAY.iftar);
+  let tgt,lbl;
+  if(ns<ss){tgt=ss-ns;lbl='Sahar Ends';}
+  else if(ns<is){tgt=is-ns;lbl='Iftar Begins';}
+  else{
+    document.getElementById('countdown').textContent='Jazakallah! 🤲';
+    document.getElementById('nextEvent').textContent="Today's fasting complete ✓";
+    return;
+  }
+  const h=Math.floor(tgt/3600),m=Math.floor((tgt%3600)/60),s=tgt%60;
+  document.getElementById('countdown').textContent=
+    [h,m,s].map(v=>String(v).padStart(2,'0')).join(':');
+  document.getElementById('nextEvent').textContent=lbl;
+}
+setInterval(countdown,1000); countdown();
+
+// ── Schedule Grid ─────────────────────────────────────────────────
+const grid=document.getElementById('rozaGrid');
+SCHEDULE.forEach(d=>{
+  const isToday=d.date===TODAY.date;
+  const el=document.createElement('div');
+  el.className='roza-item'+(isToday?' today':'');
+  el.innerHTML=`
+    <div class="roza-num">${d.roza}</div>
+    <div class="roza-date">${new Date(d.date+'T12:00:00').toLocaleDateString('en-IN',{month:'short',day:'numeric',weekday:'short'})}</div>
+    ${isToday?'<span class="today-tag">Today</span>':''}
+    <div class="roza-times">
+      <span class="roza-sahar">🌅${d.sahar}</span>
+      <span class="roza-iftar">🌇${d.iftar}</span>
+    </div>`;
+  grid.appendChild(el);
+  if(isToday) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),900);
+});
+
+// ── Toast ─────────────────────────────────────────────────────────
+function toast(msg,dur=3500){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ── Service Worker ────────────────────────────────────────────────
+let swReg = null;
+async function registerSW() {
+  if('serviceWorker' in navigator) {
+    try {
+      swReg = await navigator.serviceWorker.register('./sw.js');
+      console.log('SW registered');
+    } catch(e) { console.warn('SW failed:', e); }
+  }
+}
+registerSW();
+
+// ── Notifications ─────────────────────────────────────────────────
+let alertsActive = false;
+
+async function requestNotifications() {
+  if(!('Notification' in window)) {
+    toast('❌ Your browser does not support notifications');
+    return;
+  }
+  let perm = Notification.permission;
+  if(perm === 'default') {
+    perm = await Notification.requestPermission();
+  }
+  if(perm === 'granted') {
+    scheduleAlerts();
+  } else {
+    toast('❌ Please allow notifications in browser settings');
+    document.getElementById('permNote').textContent = '⚠️ Go to browser Settings → Notifications → Allow for this site';
+  }
+}
+
+function buildAlertTime(timeStr, advanceMin) {
+  const [h,m] = timeStr.split(':').map(Number);
+  const d = new Date(TODAY.date+'T'+timeStr+':00');
+  d.setMinutes(d.getMinutes() - advanceMin);
+  return d;
+}
+
+function scheduleAlerts() {
+  alertsActive = true;
+  const advance = parseInt(document.getElementById('advanceTime').value);
+  const doSahar = document.getElementById('saharToggle').checked;
+  const doIftar = document.getElementById('iftarToggle').checked;
+  const now = new Date();
+
+  const alerts = [];
+
+  if(doSahar) {
+    const saharAlertTime = buildAlertTime(TODAY.sahar, advance);
+    if(saharAlertTime > now) {
+      alerts.push({
+        time: saharAlertTime.toISOString(),
+        title: '🌅 Sahar Ending Soon!',
+        body: `Sahar ends at ${TODAY.sahar} — Stop eating now, Afrose! 🤲`,
+        tag: 'sahar'
+      });
+    }
+  }
+
+  if(doIftar) {
+    const iftarAlertTime = buildAlertTime(TODAY.iftar, advance);
+    if(iftarAlertTime > now) {
+      alerts.push({
+        time: iftarAlertTime.toISOString(),
+        title: '🌇 Iftar Time!',
+        body: `Iftar begins at ${TODAY.iftar} — You may break your fast, Afrose! Ramadan Mubarak! 🤲`,
+        tag: 'iftar'
+      });
+    }
+  }
+
+  // Send to service worker for background delivery
+  if(swReg && swReg.active) {
+    swReg.active.postMessage({ type: 'SCHEDULE_NOTIFICATIONS', alerts });
+  } else if(navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'SCHEDULE_NOTIFICATIONS', alerts });
+  }
+
+  // Also schedule via setTimeout as fallback (works when tab is open)
+  alerts.forEach(a => {
+    const delay = new Date(a.time) - now;
+    if(delay > 0) {
+      setTimeout(() => {
+        new Notification(a.title, {
+          body: a.body,
+          icon: './icon-192.png',
+          tag: a.tag,
+          requireInteraction: true,
+          vibrate: [200,100,200,100,200]
+        });
+      }, delay);
+    }
+  });
+
+  updateStatusUI(doSahar, doIftar, advance, alerts);
+
+  const n = alerts.length;
+  if(n === 0) {
+    toast('⚠️ No upcoming alerts for today (times already passed)');
+  } else {
+    const advText = advance === 0 ? 'at exact time' : `${advance} min before`;
+    toast(`✅ ${n} alert${n>1?'s':''} set — ${advText}!`);
+    document.getElementById('enableBtn').textContent = `✅ ${n} Alert${n>1?'s':''} Active`;
+    document.getElementById('enableBtn').style.background = 'linear-gradient(135deg,#3a9a3a,#1a5a1a)';
+    document.getElementById('permNote').textContent = n > 0
+      ? '🔔 Alerts scheduled! You\'ll be notified automatically.'
+      : '';
+  }
+}
+
+function updateStatusUI(doSahar, doIftar, advance, alerts) {
+  document.getElementById('statusCard').style.display = 'block';
+  const saharAlert = alerts.find(a=>a.tag==='sahar');
+  const iftarAlert = alerts.find(a=>a.tag==='iftar');
+
+  const sd = document.getElementById('saharDot');
+  const id = document.getElementById('iftarDot');
+
+  if(doSahar && saharAlert) {
+    sd.className = 'status-dot on';
+    const t = new Date(saharAlert.time);
+    document.getElementById('saharAlertTime').textContent =
+      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  } else {
+    sd.className = 'status-dot off';
+    document.getElementById('saharAlertTime').textContent = 'Off';
+  }
+  if(doIftar && iftarAlert) {
+    id.className = 'status-dot on';
+    const t = new Date(iftarAlert.time);
+    document.getElementById('iftarAlertTime').textContent =
+      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  } else {
+    id.className = 'status-dot off';
+    document.getElementById('iftarAlertTime').textContent = 'Off';
+  }
+}
+
+// Re-schedule on change
+['saharToggle','iftarToggle','advanceTime'].forEach(id => {
+  document.getElementById(id).addEventListener('change', ()=>{ if(alertsActive) scheduleAlerts(); });
+});
+
+// Auto-trigger if already granted
+if(Notification.permission === 'granted') {
+  document.getElementById('permNote').textContent = '✓ Notifications allowed — tap to schedule today\'s alerts';
+  document.getElementById('enableBtn').textContent = '🔔 Schedule Today\'s Alerts';
+}
+
+// ── PWA Install ───────────────────────────────────────────────────
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').classList.add('show');
+});
+function installPWA() {
+  if(deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      if(r.outcome === 'accepted') {
+        document.getElementById('installBanner').style.display = 'none';
+        toast('✅ App installed! You can now open from home screen.');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    toast('📲 On iPhone: tap Share → Add to Home Screen');
+  }
+}
+window.addEventListener('appinstalled', ()=>{
+  document.getElementById('installBanner').style.display='none';
+  toast('✅ Ramadan app installed on your phone!');
+});
+</script>
+</body>
+</html>
