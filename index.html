@@ -417,24 +417,49 @@ for(let i=0;i<70;i++){
   starsEl.appendChild(s);
 }
 
-// ── Today ─────────────────────────────────────────────────────────
+// ── 12hr format helper ────────────────────────────────────────────
+function to12hr(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+// ── Today (India local date, NOT UTC) ─────────────────────────────
+function getLocalDateStr() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
 function getTodayData() {
-  const t = new Date().toISOString().split('T')[0];
-  return SCHEDULE.find(d=>d.date===t) || SCHEDULE[0];
+  const t = getLocalDateStr();
+  return SCHEDULE.find(d=>d.date===t) || null;
 }
 const TODAY = getTodayData();
 
-document.getElementById('saharTime').textContent = TODAY.sahar;
-document.getElementById('fajarTime').textContent = TODAY.fajar;
-document.getElementById('iftarTime').textContent = TODAY.iftar;
-document.getElementById('todayLabel').textContent =
-  `Roza ${TODAY.roza} — ${new Date(TODAY.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'})}`;
+if(TODAY) {
+  document.getElementById('saharTime').textContent = to12hr(TODAY.sahar);
+  document.getElementById('fajarTime').textContent = to12hr(TODAY.fajar);
+  document.getElementById('iftarTime').textContent = to12hr(TODAY.iftar);
+  document.getElementById('todayLabel').textContent =
+    `Roza ${TODAY.roza} — ${new Date(TODAY.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'})}`;
+} else {
+  document.getElementById('saharTime').textContent = '--';
+  document.getElementById('fajarTime').textContent = '--';
+  document.getElementById('iftarTime').textContent = '--';
+  document.getElementById('todayLabel').textContent = 'Ramadan schedule not available for today';
+}
 
 // ── Clock ─────────────────────────────────────────────────────────
 function tick() {
   const n=new Date();
+  let h=n.getHours(), m=n.getMinutes(), s=n.getSeconds();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
   document.getElementById('clockTime').textContent =
-    [n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+    `${String(h12).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} ${ampm}`;
   document.getElementById('clockDate').textContent =
     n.toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
@@ -443,6 +468,11 @@ setInterval(tick,1000); tick();
 // ── Countdown ─────────────────────────────────────────────────────
 function toSec(t){const[h,m]=t.split(':').map(Number);return h*3600+m*60;}
 function countdown() {
+  if(!TODAY) {
+    document.getElementById('countdown').textContent='--:--:--';
+    document.getElementById('nextEvent').textContent='No data for today';
+    return;
+  }
   const n=new Date(), ns=n.getHours()*3600+n.getMinutes()*60+n.getSeconds();
   const ss=toSec(TODAY.sahar), is=toSec(TODAY.iftar);
   let tgt,lbl;
@@ -462,8 +492,9 @@ setInterval(countdown,1000); countdown();
 
 // ── Schedule Grid ─────────────────────────────────────────────────
 const grid=document.getElementById('rozaGrid');
+const todayStr = getLocalDateStr();
 SCHEDULE.forEach(d=>{
-  const isToday=d.date===TODAY.date;
+  const isToday=d.date===todayStr;
   const el=document.createElement('div');
   el.className='roza-item'+(isToday?' today':'');
   el.innerHTML=`
@@ -471,8 +502,8 @@ SCHEDULE.forEach(d=>{
     <div class="roza-date">${new Date(d.date+'T12:00:00').toLocaleDateString('en-IN',{month:'short',day:'numeric',weekday:'short'})}</div>
     ${isToday?'<span class="today-tag">Today</span>':''}
     <div class="roza-times">
-      <span class="roza-sahar">🌅${d.sahar}</span>
-      <span class="roza-iftar">🌇${d.iftar}</span>
+      <span class="roza-sahar">🌅${to12hr(d.sahar)}</span>
+      <span class="roza-iftar">🌇${to12hr(d.iftar)}</span>
     </div>`;
   grid.appendChild(el);
   if(isToday) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),900);
@@ -525,6 +556,7 @@ function buildAlertTime(timeStr, advanceMin) {
 }
 
 function scheduleAlerts() {
+  if(!TODAY) { toast('❌ No schedule data for today!'); return; }
   alertsActive = true;
   const advance = parseInt(document.getElementById('advanceTime').value);
   const doSahar = document.getElementById('saharToggle').checked;
@@ -539,7 +571,7 @@ function scheduleAlerts() {
       alerts.push({
         time: saharAlertTime.toISOString(),
         title: '🌅 Sahar Ending Soon!',
-        body: `Sahar ends at ${TODAY.sahar} — Stop eating now, Afrose! 🤲`,
+        body: `Sahar ends at ${to12hr(TODAY.sahar)} — Stop eating now, Afrose! 🤲`,
         tag: 'sahar'
       });
     }
@@ -551,7 +583,7 @@ function scheduleAlerts() {
       alerts.push({
         time: iftarAlertTime.toISOString(),
         title: '🌇 Iftar Time!',
-        body: `Iftar begins at ${TODAY.iftar} — You may break your fast, Afrose! Ramadan Mubarak! 🤲`,
+        body: `Iftar begins at ${to12hr(TODAY.iftar)} — You may break your fast, Afrose! Ramadan Mubarak! 🤲`,
         tag: 'iftar'
       });
     }
@@ -608,7 +640,7 @@ function updateStatusUI(doSahar, doIftar, advance, alerts) {
     sd.className = 'status-dot on';
     const t = new Date(saharAlert.time);
     document.getElementById('saharAlertTime').textContent =
-      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
   } else {
     sd.className = 'status-dot off';
     document.getElementById('saharAlertTime').textContent = 'Off';
@@ -617,7 +649,7 @@ function updateStatusUI(doSahar, doIftar, advance, alerts) {
     id.className = 'status-dot on';
     const t = new Date(iftarAlert.time);
     document.getElementById('iftarAlertTime').textContent =
-      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+      t.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
   } else {
     id.className = 'status-dot off';
     document.getElementById('iftarAlertTime').textContent = 'Off';
