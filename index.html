@@ -10,6 +10,17 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Ramadan 2026 – Afrose's Alerts</title>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "413264a4-9ae9-4846-93e6-31125178d866",
+      notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
+    });
+  });
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -417,25 +428,39 @@ for(let i=0;i<70;i++){
   starsEl.appendChild(s);
 }
 
-// ── Today ─────────────────────────────────────────────────────────
-function getTodayData() {
-  const t = new Date().toISOString().split('T')[0];
-  return SCHEDULE.find(d=>d.date===t) || SCHEDULE[0];
-}
-const TODAY = getTodayData();
-
-document.getElementById('saharTime').textContent = to12hr(TODAY.sahar);
-document.getElementById('fajarTime').textContent = to12hr(TODAY.fajar);
-document.getElementById('iftarTime').textContent = to12hr(TODAY.iftar);
-document.getElementById('todayLabel').textContent =
-  `Roza ${TODAY.roza} — ${new Date(TODAY.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'})}`;
-
 // ── 12hr format helper ────────────────────────────────────────────
 function to12hr(timeStr) {
   const [h, m] = timeStr.split(':').map(Number);
   const ampm = h >= 12 ? 'PM' : 'AM';
   const h12 = h % 12 || 12;
   return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+// ── Today (India local date, NOT UTC) ─────────────────────────────
+function getLocalDateStr() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+function getTodayData() {
+  const t = getLocalDateStr();
+  return SCHEDULE.find(d=>d.date===t) || null;
+}
+const TODAY = getTodayData();
+
+if(TODAY) {
+  document.getElementById('saharTime').textContent = to12hr(TODAY.sahar);
+  document.getElementById('fajarTime').textContent = to12hr(TODAY.fajar);
+  document.getElementById('iftarTime').textContent = to12hr(TODAY.iftar);
+  document.getElementById('todayLabel').textContent =
+    `Roza ${TODAY.roza} — ${new Date(TODAY.date+'T12:00:00').toLocaleDateString('en-IN',{weekday:'long',month:'short',day:'numeric'})}`;
+} else {
+  document.getElementById('saharTime').textContent = '--';
+  document.getElementById('fajarTime').textContent = '--';
+  document.getElementById('iftarTime').textContent = '--';
+  document.getElementById('todayLabel').textContent = 'Ramadan schedule not available for today';
 }
 
 // ── Clock ─────────────────────────────────────────────────────────
@@ -454,6 +479,11 @@ setInterval(tick,1000); tick();
 // ── Countdown ─────────────────────────────────────────────────────
 function toSec(t){const[h,m]=t.split(':').map(Number);return h*3600+m*60;}
 function countdown() {
+  if(!TODAY) {
+    document.getElementById('countdown').textContent='--:--:--';
+    document.getElementById('nextEvent').textContent='No data for today';
+    return;
+  }
   const n=new Date(), ns=n.getHours()*3600+n.getMinutes()*60+n.getSeconds();
   const ss=toSec(TODAY.sahar), is=toSec(TODAY.iftar);
   let tgt,lbl;
@@ -473,8 +503,9 @@ setInterval(countdown,1000); countdown();
 
 // ── Schedule Grid ─────────────────────────────────────────────────
 const grid=document.getElementById('rozaGrid');
+const todayStr = getLocalDateStr();
 SCHEDULE.forEach(d=>{
-  const isToday=d.date===TODAY.date;
+  const isToday=d.date===todayStr;
   const el=document.createElement('div');
   el.className='roza-item'+(isToday?' today':'');
   el.innerHTML=`
@@ -512,19 +543,38 @@ registerSW();
 let alertsActive = false;
 
 async function requestNotifications() {
-  if(!('Notification' in window)) {
-    toast('❌ Your browser does not support notifications');
-    return;
-  }
-  let perm = Notification.permission;
-  if(perm === 'default') {
-    perm = await Notification.requestPermission();
-  }
-  if(perm === 'granted') {
+  try {
+    // OneSignal subscription
+    if(window.OneSignal) {
+      await OneSignal.Notifications.requestPermission();
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      if(isSubscribed) {
+        toast('✅ OneSignal alerts enabled! You will receive Sahar & Iftar notifications!');
+        document.getElementById('enableBtn').textContent = '✅ Alerts Enabled via OneSignal!';
+        document.getElementById('enableBtn').style.background = 'linear-gradient(135deg,#3a9a3a,#1a5a1a)';
+        document.getElementById('permNote').textContent = '🔔 OneSignal will notify you even when browser is closed!';
+        scheduleAlerts();
+        return;
+      }
+    }
+    // Fallback browser notification
+    if(!('Notification' in window)) {
+      toast('❌ Your browser does not support notifications');
+      return;
+    }
+    let perm = Notification.permission;
+    if(perm === 'default') {
+      perm = await Notification.requestPermission();
+    }
+    if(perm === 'granted') {
+      scheduleAlerts();
+    } else {
+      toast('❌ Please allow notifications in browser settings');
+      document.getElementById('permNote').textContent = '⚠️ Go to browser Settings → Notifications → Allow for this site';
+    }
+  } catch(e) {
+    console.warn('OneSignal error:', e);
     scheduleAlerts();
-  } else {
-    toast('❌ Please allow notifications in browser settings');
-    document.getElementById('permNote').textContent = '⚠️ Go to browser Settings → Notifications → Allow for this site';
   }
 }
 
@@ -536,6 +586,7 @@ function buildAlertTime(timeStr, advanceMin) {
 }
 
 function scheduleAlerts() {
+  if(!TODAY) { toast('❌ No schedule data for today!'); return; }
   alertsActive = true;
   const advance = parseInt(document.getElementById('advanceTime').value);
   const doSahar = document.getElementById('saharToggle').checked;
