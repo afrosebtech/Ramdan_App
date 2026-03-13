@@ -153,57 +153,7 @@
     margin:20px 0 10px; animation:fadeDown 0.8s 0.4s ease both;
   }
 
-  /* Alert Controls */
-  .alert-controls {
-    background:rgba(13,27,42,0.85); border:1px solid rgba(201,168,76,0.15);
-    border-radius:18px; padding:18px; animation:fadeDown 0.8s 0.5s ease both;
-  }
-  .alert-row { display:flex; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06); gap:12px; }
-  .alert-row:last-child { border-bottom:none; padding-bottom:0; }
-  .alert-icon { font-size:20px; flex-shrink:0; }
-  .alert-info { flex:1; }
-  .alert-name { font-size:14px; font-weight:700; }
-  .alert-desc { font-size:11px; opacity:0.5; margin-top:1px; }
 
-  /* Toggle */
-  .toggle { position:relative; width:48px; height:26px; cursor:pointer; flex-shrink:0; }
-  .toggle input { opacity:0; width:0; height:0; }
-  .toggle-slider {
-    position:absolute; inset:0; background:rgba(255,255,255,0.1);
-    border-radius:13px; transition:0.3s; border:1px solid rgba(255,255,255,0.15);
-  }
-  .toggle-slider::before {
-    content:''; position:absolute; width:20px; height:20px;
-    left:3px; top:2px; background:white; border-radius:50%;
-    transition:0.3s; box-shadow:0 1px 4px rgba(0,0,0,0.4);
-  }
-  .toggle input:checked + .toggle-slider { background:linear-gradient(135deg,var(--gold),#8b6914); border-color:var(--gold); }
-  .toggle input:checked + .toggle-slider::before { transform:translateX(22px); }
-
-  .advance-row { display:flex; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06); gap:10px; }
-  .advance-label { font-size:13px; flex:1; opacity:0.7; }
-  select {
-    background:rgba(255,255,255,0.08); border:1px solid rgba(201,168,76,0.3);
-    color:var(--cream); border-radius:10px; padding:6px 12px; font-size:13px;
-    cursor:pointer; font-family:'Lato',sans-serif; appearance:none; -webkit-appearance:none;
-  }
-
-  /* Status card */
-  .status-card {
-    background:rgba(13,27,42,0.6); border:1px solid rgba(201,168,76,0.1);
-    border-radius:14px; padding:14px 16px; margin-top:12px;
-    animation:fadeDown 0.8s 0.55s ease both;
-  }
-  .status-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
-  .status-row:last-child { margin-bottom:0; }
-  .status-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-  .status-dot.on { background:#4caf50; box-shadow:0 0 8px #4caf50; animation:pulse 2s ease-in-out infinite; }
-  .status-dot.off { background:#666; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .status-text { font-size:12px; opacity:0.75; }
-  .status-time { font-family:'Cinzel',serif; font-size:13px; color:var(--gold); margin-left:auto; }
-
-  /* Enable button */
   .enable-btn {
     width:100%; margin-top:14px; padding:16px;
     border:none; border-radius:14px;
@@ -366,6 +316,605 @@
     line-height: 1.4;
   }
 
+
+  /* Namaz Times */
+  .namaz-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .namaz-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .namaz-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 12px;
+    padding: 10px 8px;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .namaz-item.active {
+    background: linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.3));
+    border-color: rgba(201,168,76,0.5);
+  }
+  .namaz-name {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .namaz-time {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cream);
+  }
+  .namaz-countdown {
+    font-size: 10px;
+    color: rgba(245,234,208,0.5);
+    margin-top: 2px;
+  }
+  .next-namaz {
+    background: linear-gradient(135deg,rgba(201,168,76,0.15),rgba(26,74,90,0.2));
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .next-namaz-icon { font-size: 24px; }
+  .next-namaz-label { font-size: 11px; color: var(--gold); letter-spacing: 1px; font-family: 'Cinzel',serif; }
+  .next-namaz-time { font-size: 20px; font-family: 'Cinzel',serif; font-weight: 700; color: var(--gold-light); }
+  .next-namaz-countdown { font-size: 12px; color: rgba(245,234,208,0.6); }
+
+  /* Dhikr Counter */
+  .dhikr-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    animation: fadeDown 0.8s 0.4s ease both;
+  }
+  .dhikr-select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--cream);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    margin-bottom: 16px;
+    outline: none;
+  }
+  .dhikr-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 24px;
+    color: var(--cream);
+    direction: rtl;
+    margin-bottom: 8px;
+    line-height: 1.8;
+  }
+  .dhikr-trans {
+    font-size: 12px;
+    color: rgba(245,234,208,0.6);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .dhikr-counter-display {
+    font-family: 'Cinzel', serif;
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(201,168,76,0.4);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .dhikr-target {
+    font-size: 12px;
+    color: rgba(245,234,208,0.5);
+    margin-bottom: 16px;
+  }
+  .dhikr-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    background: linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.3));
+    color: var(--gold);
+    font-size: 32px;
+    cursor: pointer;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s;
+    box-shadow: 0 0 20px rgba(201,168,76,0.2);
+  }
+  .dhikr-btn:active { transform: scale(0.92); background: rgba(201,168,76,0.3); }
+  .dhikr-reset {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(245,234,208,0.5);
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .dhikr-progress {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+  .dhikr-progress-bar {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  /* Tarawih Tracker */
+  .tarawih-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.5s ease both;
+  }
+  .tarawih-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .tarawih-night {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(255,255,255,0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 10px;
+    color: rgba(245,234,208,0.5);
+  }
+  .tarawih-night.done {
+    background: linear-gradient(135deg,rgba(201,168,76,0.25),rgba(26,74,90,0.3));
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .tarawih-night.today-night {
+    border-color: rgba(201,168,76,0.6);
+    box-shadow: 0 0 10px rgba(201,168,76,0.2);
+  }
+  .tarawih-num { font-family: 'Cinzel',serif; font-size: 12px; font-weight: 700; }
+  .tarawih-count {
+    text-align: center;
+    margin-top: 12px;
+    font-family: 'Cinzel',serif;
+    font-size: 13px;
+    color: var(--gold);
+  }
+
+  /* Quran Tracker */
+  .quran-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.6s ease both;
+  }
+  .quran-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-top: 12px;
+  }
+  .juz-item {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: 'Cinzel',serif;
+    font-size: 10px;
+    color: rgba(245,234,208,0.4);
+    transition: 0.2s;
+  }
+  .juz-item.done {
+    background: linear-gradient(135deg,rgba(74,144,74,0.3),rgba(26,74,26,0.3));
+    border-color: #4a904a;
+    color: #7adf7a;
+  }
+  .quran-progress-text {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Cinzel',serif;
+    font-size: 13px;
+    color: var(--gold);
+  }
+  .quran-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .quran-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg,#4a904a,#7adf7a);
+    border-radius: 3px;
+    transition: width 0.5s;
+  }
+
+  /* Fasting Tracker */
+  .fasting-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.35s ease both;
+  }
+  .fasting-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin-top: 12px;
+  }
+  .fast-day {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 9px;
+    color: rgba(245,234,208,0.4);
+    transition: 0.2s;
+  }
+  .fast-day.fasted {
+    background: linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.3));
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .fast-day.missed {
+    background: rgba(180,60,60,0.15);
+    border-color: rgba(180,60,60,0.4);
+    color: rgba(255,120,120,0.7);
+  }
+  .fast-day-num { font-family: 'Cinzel',serif; font-size: 11px; font-weight: 700; }
+  .fasting-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+  }
+  .fast-stat {
+    text-align: center;
+  }
+  .fast-stat-num { font-family: 'Cinzel',serif; font-size: 20px; font-weight: 700; color: var(--gold); }
+  .fast-stat-label { font-size: 10px; color: rgba(245,234,208,0.5); }
+
+  /* Daily Ayah & Hadith */
+  .daily-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.7s ease both;
+  }
+  .daily-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 20px;
+    color: var(--cream);
+    direction: rtl;
+    line-height: 2;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .daily-trans {
+    font-size: 13px;
+    color: rgba(245,234,208,0.75);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .daily-ref {
+    font-size: 11px;
+    color: var(--gold);
+    font-family: 'Cinzel',serif;
+  }
+  .daily-meaning {
+    font-size: 13px;
+    color: rgba(245,234,208,0.65);
+    line-height: 1.7;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+
+  /* Journal */
+  .journal-card {
+    background: rgba(13,27,42,0.85);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeDown 0.8s 0.8s ease both;
+  }
+  .journal-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    resize: none;
+    outline: none;
+    min-height: 100px;
+    margin-top: 10px;
+  }
+  .journal-textarea::placeholder { color: rgba(245,234,208,0.3); }
+  .journal-save {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.3));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 10px;
+    color: var(--gold);
+    font-family: 'Cinzel',serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  .journal-entries {
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .journal-entry {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: rgba(245,234,208,0.7);
+    line-height: 1.6;
+  }
+  .journal-entry-date {
+    font-size: 10px;
+    color: var(--gold);
+    font-family: 'Cinzel',serif;
+    margin-bottom: 4px;
+  }
+
+
+  /* Nav Tabs */
+  .nav-tabs {
+    display: flex; gap: 6px; margin-bottom: 16px;
+    overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex: 0 0 auto; padding: 8px 14px; border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(255,255,255,0.03);
+    color: rgba(245,234,208,0.7); font-size: 11px;
+    font-family: 'Cinzel', serif; cursor: pointer;
+    letter-spacing: 0.5px; transition: 0.2s; white-space: nowrap;
+  }
+  .nav-tab.active {
+    background: linear-gradient(135deg, rgba(201,168,76,0.25), rgba(26,74,90,0.3));
+    border-color: var(--gold); color: var(--gold);
+  }
+  .tab-page { display: none; }
+  .tab-page.active { display: block; }
+
+  /* Namaz Times */
+  .namaz-card {
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+  }
+  .namaz-card-title {
+    font-family: 'Cinzel',serif; font-size: 11px; letter-spacing: 2px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .next-namaz-box {
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(26,74,90,0.2));
+    border: 1px solid rgba(201,168,76,0.3); border-radius: 12px;
+    padding: 12px 14px; display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
+    animation: pulseBorder 2s infinite;
+  }
+  @keyframes pulseBorder {
+    0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0.3)}
+    50%{box-shadow:0 0 0 6px rgba(201,168,76,0)}
+  }
+  .nn-icon { font-size: 26px; }
+  .nn-label { font-size: 10px; color: var(--gold); font-family:'Cinzel',serif; letter-spacing:1px; }
+  .nn-name { font-size: 18px; font-family:'Cinzel',serif; font-weight:700; color:var(--gold-light); }
+  .nn-in { font-size: 11px; color: rgba(245,234,208,0.6); }
+  .namaz-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+  }
+  .namaz-item {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 12px; padding: 10px 6px; text-align: center; transition: 0.2s;
+  }
+  .namaz-item.nm-current {
+    background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(26,74,90,0.25));
+    border-color: rgba(201,168,76,0.5);
+  }
+  .namaz-item.nm-passed { opacity: 0.38; }
+  .nm-name { font-size: 9px; color: var(--gold); font-family:'Cinzel',serif; letter-spacing:0.5px; margin-bottom:4px; text-transform:uppercase; }
+  .nm-time { font-family:'Cinzel',serif; font-size: 13px; font-weight:700; color: var(--cream); }
+  .nm-cd { font-size: 9px; color: rgba(245,234,208,0.5); margin-top:2px; }
+  .namaz-loading { text-align:center; color:rgba(245,234,208,0.5); font-size:12px; padding:16px; }
+
+  /* Dhikr */
+  .dhikr-card {
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px; padding: 18px; margin-bottom: 14px; text-align: center;
+  }
+
+  /* Trackers */
+  .tracker-card {
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+  }
+  .tracker-title {
+    font-family:'Cinzel',serif; font-size:11px; letter-spacing:2px;
+    color:var(--gold); text-transform:uppercase; margin-bottom:12px;
+  }
+  .t-grid6 { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; margin-bottom:10px; }
+  .tarawih-n {
+    aspect-ratio:1; border-radius:8px; border:1px solid rgba(201,168,76,0.15);
+    background:rgba(255,255,255,0.02); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; cursor:pointer; transition:0.2s;
+    font-size:9px; color:rgba(245,234,208,0.4);
+  }
+  .tarawih-n.t-done { background:linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.25)); border-color:var(--gold); color:var(--gold); }
+  .tarawih-n.t-today { border-color:rgba(201,168,76,0.5); box-shadow:0 0 8px rgba(201,168,76,0.2); }
+  .tn { font-family:'Cinzel',serif; font-size:12px; font-weight:700; }
+  .juz-n {
+    aspect-ratio:1; border-radius:6px; border:1px solid rgba(201,168,76,0.12);
+    background:rgba(255,255,255,0.02); display:flex; align-items:center;
+    justify-content:center; cursor:pointer; font-family:'Cinzel',serif;
+    font-size:10px; color:rgba(245,234,208,0.35); transition:0.2s;
+  }
+  .juz-n.j-done { background:linear-gradient(135deg,rgba(74,144,74,0.25),rgba(26,74,26,0.25)); border-color:#4a904a; color:#7adf7a; }
+  .fast-n {
+    aspect-ratio:1; border-radius:6px; border:1px solid rgba(201,168,76,0.12);
+    background:rgba(255,255,255,0.02); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; cursor:pointer;
+    font-size:9px; color:rgba(245,234,208,0.35); transition:0.2s;
+  }
+  .fast-n.f-done { background:linear-gradient(135deg,rgba(201,168,76,0.2),rgba(26,74,90,0.25)); border-color:var(--gold); color:var(--gold); }
+  .fast-n.f-miss { background:rgba(180,60,60,0.12); border-color:rgba(180,60,60,0.35); color:rgba(255,120,120,0.6); }
+  .fast-n.f-future { opacity:0.25; cursor:default; }
+  .fn { font-family:'Cinzel',serif; font-size:11px; font-weight:700; }
+  .t-stat { text-align:center; font-family:'Cinzel',serif; font-size:12px; color:var(--gold); margin-top:8px; }
+  .qbar { height:5px; background:rgba(255,255,255,0.07); border-radius:3px; overflow:hidden; margin-bottom:6px; }
+  .qbar-fill { height:100%; background:linear-gradient(90deg,#4a904a,#7adf7a); border-radius:3px; transition:width 0.5s; }
+  .fast-stats { display:flex; justify-content:space-around; margin-top:10px; }
+  .fs-num { font-family:'Cinzel',serif; font-size:20px; font-weight:700; color:var(--gold); text-align:center; }
+  .fs-label { font-size:10px; color:rgba(245,234,208,0.5); text-align:center; }
+
+  /* Inspire */
+  .inspire-card {
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+  }
+  .ins-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .ins-btn {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(201,168,76,0.2);
+    border-radius:8px; padding:6px 14px; color:var(--gold); cursor:pointer; font-size:18px;
+  }
+  .ins-day { font-family:'Cinzel',serif; font-size:12px; color:var(--gold); }
+  .ins-asma-ar { font-family:'Amiri',serif; font-size:32px; direction:rtl; text-align:center; color:var(--gold-light); margin-bottom:4px; }
+  .ins-asma-name { font-family:'Cinzel',serif; font-size:16px; font-weight:700; text-align:center; color:var(--cream); margin-bottom:3px; }
+  .ins-asma-meaning { font-size:12px; color:rgba(245,234,208,0.6); text-align:center; font-style:italic; margin-bottom:10px; }
+  .ins-reflection { font-size:13px; color:rgba(245,234,208,0.75); line-height:1.7; }
+  .ins-divider { height:1px; background:rgba(201,168,76,0.1); margin:12px 0; }
+  .ins-sec-title { font-family:'Cinzel',serif; font-size:10px; letter-spacing:1.5px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+  .ins-ayah-ar { font-family:'Amiri',serif; font-size:17px; direction:rtl; text-align:right; color:var(--cream); line-height:2; margin-bottom:6px; }
+  .ins-ayah-tr { font-size:13px; color:rgba(245,234,208,0.7); line-height:1.7; font-style:italic; margin-bottom:4px; }
+  .ins-ayah-ref { font-size:11px; color:var(--gold); font-family:'Cinzel',serif; }
+  .ins-hadith-tr { font-size:13px; color:rgba(245,234,208,0.7); line-height:1.7; font-style:italic; margin-bottom:4px; }
+  .ins-hadith-ref { font-size:11px; color:var(--gold); font-family:'Cinzel',serif; }
+
+  /* Journal */
+  .journal-card2 {
+    background: rgba(13,27,42,0.85); border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 18px; padding: 16px; margin-bottom: 14px;
+  }
+  .j-date-label { font-family:'Cinzel',serif; font-size:11px; color:var(--gold); margin-bottom:8px; }
+  .j-textarea {
+    width:100%; background:rgba(255,255,255,0.03);
+    border:1px solid rgba(201,168,76,0.2); border-radius:10px;
+    padding:12px; color:var(--cream); font-family:'Lato',sans-serif;
+    font-size:14px; line-height:1.7; resize:none; outline:none;
+    min-height:110px; margin-bottom:10px;
+  }
+  .j-textarea::placeholder { color:rgba(245,234,208,0.25); }
+  .j-save {
+    width:100%; padding:12px;
+    background:linear-gradient(135deg,rgba(201,168,76,0.18),rgba(26,74,90,0.25));
+    border:1px solid rgba(201,168,76,0.25); border-radius:10px;
+    color:var(--gold); font-family:'Cinzel',serif; font-size:11px;
+    letter-spacing:1px; cursor:pointer; margin-bottom:14px;
+  }
+  .j-entries { max-height:220px; overflow-y:auto; }
+  .j-entry {
+    background:rgba(255,255,255,0.02); border-radius:10px;
+    padding:10px 12px; margin-bottom:8px;
+    border-left:2px solid rgba(201,168,76,0.3);
+  }
+  .j-entry-date { font-size:10px; color:var(--gold); font-family:'Cinzel',serif; margin-bottom:4px; }
+  .j-entry-text { font-size:13px; color:rgba(245,234,208,0.75); line-height:1.6; }
+
+  /* PWA Install Popup */
+  .pwa-popup {
+    display:none; position:fixed; inset:0; z-index:9999;
+    background:rgba(0,0,0,0.7); align-items:flex-end; justify-content:center;
+  }
+  .pwa-popup.show { display:flex; }
+  .pwa-sheet {
+    background:linear-gradient(135deg,#0d1b2a,#0a0e1a);
+    border:1px solid rgba(201,168,76,0.3); border-radius:20px 20px 0 0;
+    padding:24px 20px 40px; width:100%; max-width:480px;
+    animation:slideUp 0.4s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  .pwa-handle { width:40px; height:4px; background:rgba(255,255,255,0.2); border-radius:2px; margin:0 auto 16px; }
+  .pwa-title { font-family:'Cinzel',serif; font-size:18px; font-weight:700; color:var(--gold); text-align:center; margin-bottom:8px; }
+  .pwa-desc { font-size:13px; color:rgba(245,234,208,0.7); text-align:center; line-height:1.7; margin-bottom:20px; }
+  .pwa-steps { background:rgba(255,255,255,0.04); border-radius:12px; padding:14px; margin-bottom:18px; }
+  .pwa-step { display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:13px; color:rgba(245,234,208,0.8); }
+  .pwa-step:last-child { margin-bottom:0; }
+  .pwa-step-num { width:22px; height:22px; border-radius:50%; background:rgba(201,168,76,0.2); border:1px solid var(--gold); color:var(--gold); font-size:11px; font-family:'Cinzel',serif; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .pwa-install-btn {
+    width:100%; padding:15px; border:none; border-radius:14px;
+    background:linear-gradient(135deg,var(--gold),#8b6914);
+    color:var(--deep); font-family:'Cinzel',serif; font-size:14px;
+    font-weight:700; letter-spacing:2px; cursor:pointer; margin-bottom:10px;
+  }
+  .pwa-close-btn {
+    width:100%; padding:10px; border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px; background:transparent; color:rgba(245,234,208,0.5);
+    font-size:13px; cursor:pointer;
+  }
+
   /* Scrollbar */
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
@@ -525,6 +1074,44 @@
 
 <div class="container">
 
+
+  <!-- PWA Install Popup -->
+  <div class="pwa-popup" id="pwaPopup">
+    <div class="pwa-sheet">
+      <div class="pwa-handle"></div>
+      <div class="pwa-title">📲 Install Ramadan App</div>
+      <div class="pwa-desc">Apne phone ki home screen pe add karo — bilkul app jaisi feel aayegi! 🌙</div>
+      <div class="pwa-steps" id="pwaSteps">
+        <div class="pwa-step"><div class="pwa-step-num">1</div><span>Neeche Share button dabao 📤</span></div>
+        <div class="pwa-step"><div class="pwa-step-num">2</div><span>"Add to Home Screen" select karo</span></div>
+        <div class="pwa-step"><div class="pwa-step-num">3</div><span>"Add" tap karo — ho gaya! ✅</span></div>
+      </div>
+      <button class="pwa-install-btn" id="pwaInstallBtn" onclick="doPwaInstall()">📥 Install App</button>
+      <button class="pwa-close-btn" onclick="closePwa()">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- Nav Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('home',this)">🌙 Home</button>
+    <button class="nav-tab" onclick="switchTab('namaz',this)">🕌 Namaz</button>
+    <button class="nav-tab" onclick="switchTab('dhikr',this)">📿 Dhikr</button>
+    <button class="nav-tab" onclick="switchTab('tracker',this)">✅ Tracker</button>
+    <button class="nav-tab" onclick="switchTab('inspire',this)">✨ Inspire</button>
+    <button class="nav-tab" onclick="switchTab('journal',this)">📓 Journal</button>
+    <button class="nav-tab" onclick="switchTab('duas',this)">🤲 Duas</button>
+    <button class="nav-tab" onclick="switchTab('schedule',this)">📅 Schedule</button>
+  </div>
+
+  <!-- HOME TAB wrapper start -->
+  <div class="tab-page active" id="tab-home">
+
+  <!-- Install Banner (shown on mobile if not installed) -->
+  <div class="install-banner" id="installBanner">
+    <p>📲 Install this app on your phone for background alerts!</p>
+    <button class="install-btn" id="installBtn" onclick="installPWA()">📥 Add to Home Screen</button>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <span class="moon-icon">🌙</span>
@@ -603,11 +1190,141 @@
     </div>
   </div>
 
-  <!-- Schedule -->
+
+  <div class="status-card" id="statusCard" style="display:none">
+    <div class="status-row" id="saharStatus">
+      <div class="status-dot off" id="saharDot"></div>
+      <div class="status-text">Sahar alert</div>
+      <div class="status-time" id="saharAlertTime">--</div>
+    </div>
+    <div class="status-row" id="iftarStatus">
+      <div class="status-dot off" id="iftarDot"></div>
+      <div class="status-text">Iftar alert</div>
+      <div class="status-time" id="iftarAlertTime">--</div>
+    </div>
+  </div>
+
+  </div><!-- end tab-duas -->
+
+  <!-- SCHEDULE TAB -->
+  <div class="tab-page" id="tab-schedule">
   <div class="section-title">📅 Full Ramadan Schedule</div>
   <div class="roza-grid" id="rozaGrid"></div>
 
-  <!-- Dua Section -->
+
+  </div><!-- end tab-home -->
+
+  <!-- NAMAZ TAB -->
+  <div class="tab-page" id="tab-namaz">
+    <div class="namaz-card">
+      <div class="namaz-card-title">🕌 Namaz Timings — Live</div>
+      <select class="city-select" id="namazCitySelect" onchange="fetchNamaz()" style="margin-bottom:12px">
+        <option value="12.5266,78.2138">🕌 Krishnagiri</option>
+        <option value="13.0827,80.2707">🕌 Chennai</option>
+        <option value="12.9716,77.5946">🕌 Bangalore</option>
+        <option value="11.0168,76.9558">🕌 Coimbatore</option>
+        <option value="11.6643,78.1460">🕌 Salem</option>
+      </select>
+      <div id="namazLoading" class="namaz-loading">🕌 Loading prayer times...</div>
+      <div id="namazContent" style="display:none">
+        <div class="next-namaz-box" id="nextNamazBox">
+          <div class="nn-icon">🕌</div>
+          <div>
+            <div class="nn-label">NEXT PRAYER</div>
+            <div class="nn-name" id="nnName">--</div>
+            <div class="nn-in" id="nnIn">--</div>
+          </div>
+        </div>
+        <div class="namaz-grid" id="namazGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DHIKR TAB -->
+  <div class="tab-page" id="tab-dhikr">
+    <div class="dhikr-card">
+      <div class="namaz-card-title">📿 Dhikr Counter</div>
+      <select class="city-select" id="dhikrSelect" onchange="changeDhikr2()" style="margin-bottom:12px">
+        <option value="0">سُبْحَانَ اللَّهِ — SubhanAllah (33)</option>
+        <option value="1">الْحَمْدُ لِلَّهِ — Alhamdulillah (33)</option>
+        <option value="2">اللَّهُ أَكْبَرُ — Allahu Akbar (34)</option>
+        <option value="3">لَا إِلَهَ إِلَّا اللَّهُ — La ilaha illallah (100)</option>
+        <option value="4">أَسْتَغْفِرُ اللَّهَ — Astaghfirullah (100)</option>
+      </select>
+      <div class="dhikr-arabic" id="dhikrAr2" style="font-family:'Amiri',serif;font-size:26px;direction:rtl;text-align:center;color:var(--cream);line-height:1.8;margin-bottom:6px;">سُبْحَانَ اللَّهِ</div>
+      <div id="dhikrTr2" style="font-size:12px;color:rgba(245,234,208,0.6);font-style:italic;text-align:center;margin-bottom:4px;">SubhanAllah</div>
+      <div id="dhikrMn2" style="font-size:11px;color:rgba(201,168,76,0.8);text-align:center;margin-bottom:16px;">Glory be to Allah</div>
+      <div id="dhikrCount2" style="font-family:'Cinzel',serif;font-size:72px;font-weight:800;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(201,168,76,0.4);line-height:1;margin-bottom:6px;">0</div>
+      <div id="dhikrTarget2" style="text-align:center;font-size:12px;color:rgba(245,234,208,0.5);margin-bottom:12px;">0 / 33</div>
+      <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;margin-bottom:16px;"><div id="dhikrBar2" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width 0.3s;width:0%"></div></div>
+      <div class="dhikr-btn" onclick="tapDhikr2()" style="width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(26,74,90,0.25));color:var(--gold);font-size:36px;cursor:pointer;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;transition:0.15s;box-shadow:0 0 20px rgba(201,168,76,0.15);">📿</div>
+      <button onclick="resetDhikr2()" style="display:block;width:100%;padding:10px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(245,234,208,0.5);border-radius:10px;cursor:pointer;font-size:12px;">Reset Counter</button>
+    </div>
+  </div>
+
+  <!-- TRACKER TAB -->
+  <div class="tab-page" id="tab-tracker">
+    <div class="tracker-card">
+      <div class="tracker-title">🌙 Fasting Tracker — Tap to mark</div>
+      <div class="t-grid6" id="fastGrid"></div>
+      <div class="fast-stats">
+        <div><div class="fs-num" id="fc1">0</div><div class="fs-label">Fasted ✅</div></div>
+        <div><div class="fs-num" id="fc2">0</div><div class="fs-label">Missed ❌</div></div>
+        <div><div class="fs-num" id="fc3">0</div><div class="fs-label">Remaining</div></div>
+      </div>
+    </div>
+    <div class="tracker-card">
+      <div class="tracker-title">🌟 Tarawih Tracker — Tap night to mark</div>
+      <div class="t-grid6" id="tarawihGrid2"></div>
+      <div class="t-stat" id="tarawihStat2">0 / 30 nights</div>
+    </div>
+    <div class="tracker-card">
+      <div class="tracker-title">📖 Quran — Juz Tracker</div>
+      <div class="t-grid6" id="quranGrid2"></div>
+      <div class="qbar"><div class="qbar-fill" id="qbarFill" style="width:0%"></div></div>
+      <div class="t-stat" id="quranStat2">0 / 30 Juz</div>
+    </div>
+  </div>
+
+  <!-- INSPIRE TAB -->
+  <div class="tab-page" id="tab-inspire">
+    <div class="inspire-card">
+      <div class="ins-nav">
+        <button class="ins-btn" onclick="prevIns()">‹</button>
+        <div class="ins-day" id="insDay">Day 1</div>
+        <button class="ins-btn" onclick="nextIns()">›</button>
+      </div>
+      <div class="ins-asma-ar" id="insAsmaAr">--</div>
+      <div class="ins-asma-name" id="insAsmaName">--</div>
+      <div class="ins-asma-meaning" id="insAsmaMeaning">--</div>
+      <div class="ins-reflection" id="insReflection">--</div>
+      <div class="ins-divider"></div>
+      <div class="ins-sec-title">📖 Daily Ayah</div>
+      <div class="ins-ayah-ar" id="insAyahAr">--</div>
+      <div class="ins-ayah-tr" id="insAyahTr">--</div>
+      <div class="ins-ayah-ref" id="insAyahRef">--</div>
+      <div class="ins-divider"></div>
+      <div class="ins-sec-title">📿 Daily Hadith</div>
+      <div class="ins-hadith-tr" id="insHadithTr">--</div>
+      <div class="ins-hadith-ref" id="insHadithRef">--</div>
+    </div>
+  </div>
+
+  <!-- JOURNAL TAB -->
+  <div class="tab-page" id="tab-journal">
+    <div class="journal-card2">
+      <div class="namaz-card-title">📓 Ramadan Journal</div>
+      <div class="j-date-label" id="jDateLabel">Today — Roza --</div>
+      <textarea class="j-textarea" id="jText" placeholder="Aaj ka reflection... Kya seeekha? Kya dua ki? Kya mehsoos kiya..."></textarea>
+      <button class="j-save" onclick="saveJournal2()">💾 SAVE TODAY'S ENTRY</button>
+      <div class="namaz-card-title" style="margin-top:4px">📚 Previous Entries</div>
+      <div class="j-entries" id="jEntries"></div>
+    </div>
+  </div>
+
+  <!-- DUAS TAB (existing dua section will be moved here) -->
+  <div class="tab-page" id="tab-duas">
+
   <div class="section-title">🤲 Ramadan Dua</div>
   <div class="dua-card">
     <div class="dua-header" onclick="toggleDua()">
@@ -757,6 +1474,9 @@
 
 </div>
 
+  </div><!-- end tab-schedule -->
+
+<div class="toast" id="toast"></div>
 
 <script>
 // ── Multi City Data ───────────────────────────────────────────────
@@ -1070,6 +1790,356 @@ SCHEDULE.forEach(d=>{
   grid.appendChild(el);
   if(isToday) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'center'}),900);
 });
+
+// ── Toast ─────────────────────────────────────────────────────────
+function toast(msg,dur=3500){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ── Service Worker ────────────────────────────────────────────────
+let swReg = null;
+async function registerSW() {
+  if('serviceWorker' in navigator) {
+    try {
+      swReg = await navigator.serviceWorker.register('./sw.js');
+      console.log('SW registered');
+    } catch(e) { console.warn('SW failed:', e); }
+  }
+}
+registerSW();
+
+// ── PWA Install ───────────────────────────────────────────────────
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').classList.add('show');
+});
+function installPWA() {
+  if(deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      if(r.outcome === 'accepted') {
+        document.getElementById('installBanner').style.display = 'none';
+        toast('✅ App installed! You can now open from home screen.');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    toast('📲 On iPhone: tap Share → Add to Home Screen');
+  }
+}
+window.addEventListener('appinstalled', ()=>{
+  document.getElementById('installBanner').style.display='none';
+  toast('✅ Ramadan app installed on your phone!');
+});
+
+// ── Tab Switching ─────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(name==='namaz' && !namazLoaded) fetchNamaz();
+  if(name==='tracker') initTrackers2();
+  if(name==='inspire') renderInspire();
+  if(name==='journal') { renderJournal2(); updateJournalDate(); }
+}
+
+// ── Namaz ─────────────────────────────────────────────
+let namazLoaded = false;
+let namazData = null;
+
+async function fetchNamaz() {
+  const coords = document.getElementById('namazCitySelect').value;
+  const [lat,lng] = coords.split(',');
+  document.getElementById('namazLoading').style.display='block';
+  document.getElementById('namazContent').style.display='none';
+  try {
+    const now = new Date();
+    const d = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
+    const url = `https://api.aladhan.com/v1/timings/${d}?latitude=${lat}&longitude=${lng}&method=1`;
+    const res = await fetch(url);
+    const data = await res.json();
+    namazData = data.data.timings;
+    namazLoaded = true;
+    renderNamaz2();
+    document.getElementById('namazLoading').style.display='none';
+    document.getElementById('namazContent').style.display='block';
+  } catch(e) {
+    document.getElementById('namazLoading').textContent='❌ Network error. Check internet.';
+  }
+}
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+function toMins(t){ const[h,m]=t.split(':').map(Number); return h*60+m; }
+
+function renderNamaz2() {
+  if(!namazData) return;
+  const prayers = [
+    {name:'Fajr',key:'Fajr',icon:'🌄'},
+    {name:'Sunrise',key:'Sunrise',icon:'🌅'},
+    {name:'Dhuhr',key:'Dhuhr',icon:'☀️'},
+    {name:'Asr',key:'Asr',icon:'🌤'},
+    {name:'Maghrib',key:'Maghrib',icon:'🌇'},
+    {name:'Isha',key:'Isha',icon:'🌌'},
+  ];
+  const now = new Date();
+  const nowM = now.getHours()*60+now.getMinutes();
+  let nextIdx=0, nextMin=9999;
+  prayers.forEach((p,i)=>{
+    const t=namazData[p.key]; if(!t) return;
+    const m=toMins(t);
+    if(m>nowM && m<nextMin){ nextMin=m; nextIdx=i; }
+  });
+  const np=prayers[nextIdx];
+  const npT=namazData[np.key];
+  const diffM=nextMin-nowM;
+  const dH=Math.floor(diffM/60), dM=diffM%60;
+  const inStr = diffM<=0?'Now':(dH>0?`${dH}h ${dM}m`:`${dM}m`);
+  document.getElementById('nnName').textContent=`${np.icon} ${np.name} — ${to12hr(npT)}`;
+  document.getElementById('nnIn').textContent=`in ${inStr}`;
+
+  const grid=document.getElementById('namazGrid');
+  grid.innerHTML='';
+  prayers.forEach((p,i)=>{
+    const t=namazData[p.key]; if(!t) return;
+    const m=toMins(t);
+    const isPast=m<nowM&&i!==nextIdx;
+    const isCurr=i===nextIdx;
+    const div=document.createElement('div');
+    div.className=`namaz-item${isCurr?' nm-current':''}${isPast?' nm-passed':''}`;
+    const dif=m-nowM;
+    const cdStr=isPast?'✓ done':isCurr?'← next':(Math.floor(dif/60)>0?`${Math.floor(dif/60)}h ${dif%60}m`:`${dif}m`);
+    div.innerHTML=`<div class="nm-name">${p.icon} ${p.name}</div><div class="nm-time">${to12hr(t)}</div><div class="nm-cd">${cdStr}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+// Refresh namaz every 60s
+setInterval(()=>{ if(namazData) renderNamaz2(); }, 60000);
+
+// ── Dhikr 2 ───────────────────────────────────────────
+const DHIKRS2 = [
+  {ar:'سُبْحَانَ اللَّهِ',tr:'SubhanAllah',mn:'Glory be to Allah',t:33},
+  {ar:'الْحَمْدُ لِلَّهِ',tr:'Alhamdulillah',mn:'All praise to Allah',t:33},
+  {ar:'اللَّهُ أَكْبَرُ',tr:'Allahu Akbar',mn:'Allah is the Greatest',t:34},
+  {ar:'لَا إِلَهَ إِلَّا اللَّهُ',tr:'La ilaha illallah',mn:'No god but Allah',t:100},
+  {ar:'أَسْتَغْفِرُ اللَّهَ',tr:'Astaghfirullah',mn:'I seek Allah forgiveness',t:100},
+];
+let dhikrIdx2=0, dhikrCnt2=0;
+
+function lsGet2(k){ try{return localStorage.getItem(k);}catch(e){return null;} }
+function lsSet2(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
+
+function changeDhikr2() {
+  dhikrIdx2=parseInt(document.getElementById('dhikrSelect').value);
+  dhikrCnt2=parseInt(lsGet2('d2_'+dhikrIdx2)||'0');
+  renderDhikr2();
+}
+function renderDhikr2() {
+  const d=DHIKRS2[dhikrIdx2];
+  document.getElementById('dhikrAr2').textContent=d.ar;
+  document.getElementById('dhikrTr2').textContent=d.tr;
+  document.getElementById('dhikrMn2').textContent=d.mn;
+  document.getElementById('dhikrCount2').textContent=dhikrCnt2;
+  document.getElementById('dhikrTarget2').textContent=`${dhikrCnt2} / ${d.t}`;
+  const pct=Math.min(100,(dhikrCnt2/d.t)*100);
+  document.getElementById('dhikrBar2').style.width=pct+'%';
+  document.getElementById('dhikrCount2').style.color=dhikrCnt2>=d.t&&dhikrCnt2>0?'#7adf7a':'var(--gold)';
+}
+function tapDhikr2() {
+  dhikrCnt2++; lsSet2('d2_'+dhikrIdx2,dhikrCnt2); renderDhikr2();
+  if(navigator.vibrate) navigator.vibrate(30);
+}
+function resetDhikr2() { dhikrCnt2=0; lsSet2('d2_'+dhikrIdx2,0); renderDhikr2(); }
+changeDhikr2();
+
+// ── Trackers ──────────────────────────────────────────
+function initTrackers2() {
+  const today=getLocalDateStr();
+  // Fasting
+  const fg=document.getElementById('fastGrid'); fg.innerHTML='';
+  let fc1=0,fc2=0;
+  SCHEDULE.forEach(d=>{
+    const st=lsGet2('f2_'+d.date)||'none';
+    if(st==='done') fc1++; if(st==='miss') fc2++;
+    const fut=d.date>today;
+    const div=document.createElement('div');
+    div.className=`fast-n${st==='done'?' f-done':''}${st==='miss'?' f-miss':''}${fut?' f-future':''}`;
+    div.innerHTML=`<div class="fn">${d.roza}</div><div>${st==='done'?'✓':st==='miss'?'✗':''}</div>`;
+    if(!fut) div.onclick=()=>{
+      const s=lsGet2('f2_'+d.date)||'none';
+      lsSet2('f2_'+d.date,s==='none'?'done':s==='done'?'miss':'none');
+      initTrackers2();
+    };
+    fg.appendChild(div);
+  });
+  document.getElementById('fc1').textContent=fc1;
+  document.getElementById('fc2').textContent=fc2;
+  document.getElementById('fc3').textContent=30-fc1-fc2;
+
+  // Tarawih
+  const tg=document.getElementById('tarawihGrid2'); tg.innerHTML='';
+  let tc=0;
+  const todayRoza=SCHEDULE.find(d=>d.date===today)?.roza||0;
+  for(let i=1;i<=30;i++){
+    const done=lsGet2('tw2_'+i)==='1'; if(done) tc++;
+    const div=document.createElement('div');
+    div.className=`tarawih-n${done?' t-done':''}${i===todayRoza?' t-today':''}`;
+    div.innerHTML=`<div class="tn">${i}</div><div>${done?'✓':''}</div>`;
+    div.onclick=()=>{ lsSet2('tw2_'+i,lsGet2('tw2_'+i)==='1'?'0':'1'); initTrackers2(); };
+    tg.appendChild(div);
+  }
+  document.getElementById('tarawihStat2').textContent=`${tc} / 30 nights 🌟`;
+
+  // Quran
+  const qg=document.getElementById('quranGrid2'); qg.innerHTML='';
+  let qc=0;
+  for(let i=1;i<=30;i++){
+    const done=lsGet2('qz2_'+i)==='1'; if(done) qc++;
+    const div=document.createElement('div');
+    div.className=`juz-n${done?' j-done':''}`;
+    div.textContent=i;
+    div.onclick=()=>{ lsSet2('qz2_'+i,lsGet2('qz2_'+i)==='1'?'0':'1'); initTrackers2(); };
+    qg.appendChild(div);
+  }
+  document.getElementById('qbarFill').style.width=(qc/30*100)+'%';
+  document.getElementById('quranStat2').textContent=`${qc} / 30 Juz completed 📖`;
+}
+
+// ── Inspiration Data ──────────────────────────────────
+const INS = [
+  {a:'الرَّحْمَنُ',n:'Ar-Rahman',m:'The Most Gracious',r:'His mercy encompasses everything — every breath you take is a gift from Ar-Rahman.',ya:'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',yt:'In the name of Allah, the Most Gracious, the Most Merciful.',yr:'Al-Fatiha 1:1',ht:'"Allah has divided mercy into 100 parts — kept 99 for the Day of Judgment."',hr:'Sahih Bukhari'},
+  {a:'الرَّحِيمُ',n:'Ar-Raheem',m:'The Most Merciful',r:'His specific mercy is reserved for the believers. Draw near to Him through worship.',ya:'وَكَانَ بِالْمُؤْمِنِينَ رَحِيمًا',yt:'And He is ever Merciful to the believers.',yr:'Al-Ahzab 33:43',ht:'"Be merciful to others and you will receive mercy."',hr:'Musnad Ahmad'},
+  {a:'الْمَلِكُ',n:'Al-Malik',m:'The Sovereign',r:'All kingdoms belong to Him alone. True power lies only with Allah.',ya:'فَتَعَالَى اللَّهُ الْمَلِكُ الْحَقُّ',yt:'So exalted is Allah, the Sovereign, the Truth.',yr:'Ta-Ha 20:114',ht:'"The proudest person will be humbled before Al-Malik."',hr:'Sahih Muslim'},
+  {a:'الْقُدُّوسُ',n:'Al-Quddus',m:'The Holy',r:'He is pure from all imperfection. Purify your heart to draw near to Al-Quddus.',ya:'هُوَ اللَّهُ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْمَلِكُ الْقُدُّوسُ',yt:'He is Allah, there is no god but Him, the Sovereign, the Holy.',yr:'Al-Hashr 59:23',ht:'"The angels say SubhanAllah al-Quddus continuously."',hr:'Sahih Muslim'},
+  {a:'السَّلَامُ',n:'As-Salam',m:'The Source of Peace',r:'True peace comes only from Allah. In His remembrance do hearts find rest.',ya:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',yt:'Verily, in the remembrance of Allah do hearts find rest.',yr:"Ar-Ra'd 13:28",ht:'"Spread peace among yourselves."',hr:'Sahih Muslim'},
+  {a:'الْعَزِيزُ',n:'Al-Aziz',m:'The Almighty',r:'His might cannot be overcome. Seek strength through Him alone.',ya:'وَلِلَّهِ الْعِزَّةُ وَلِرَسُولِهِ وَلِلْمُؤْمِنِينَ',yt:'And to Allah belongs all honor, to His messenger, and to the believers.',yr:'Al-Munafiqun 63:8',ht:'"Whoever desires honor — all honor belongs to Allah."',hr:'Tafsir Ibn Kathir'},
+  {a:'الْغَفَّارُ',n:'Al-Ghaffar',m:'The Oft-Forgiving',r:'No sin is too great for Al-Ghaffar. Turn to Him in this blessed month.',ya:'إِنَّهُ كَانَ غَفَّارًا',yt:'Indeed, He is ever-Forgiving.',yr:'Nuh 71:10',ht:'"If you did not sin, Allah would replace you with people who seek forgiveness."',hr:'Sahih Muslim'},
+  {a:'الرَّزَّاقُ',n:'Ar-Razzaq',m:'The Provider',r:'Every morsel of iftar is from Ar-Razzaq. Be grateful for His provision.',ya:'إِنَّ اللَّهَ هُوَ الرَّزَّاقُ',yt:'Indeed, it is Allah who is the Provider.',yr:'Adh-Dhariyat 51:58',ht:'"The dua of the fasting person is not rejected."',hr:'Sunan Ibn Majah'},
+  {a:'الْفَتَّاحُ',n:'Al-Fattah',m:'The Opener',r:'He opens doors that seem forever closed. Make dua — He is Al-Fattah.',ya:'مَا يَفْتَحِ اللَّهُ لِلنَّاسِ مِن رَّحْمَةٍ فَلَا مُمْسِكَ لَهَا',yt:'Whatever Allah grants of mercy — none can withhold it.',yr:'Fatir 35:2',ht:'"Make dua to Allah while certain of being answered."',hr:'Sunan at-Tirmidhi'},
+  {a:'الْعَلِيمُ',n:'Al-Aleem',m:'The All-Knowing',r:'He knows every hidden thought. Align your secret and public worship.',ya:'وَاللَّهُ بِكُلِّ شَيْءٍ عَلِيمٌ',yt:'And Allah has knowledge of all things.',yr:'Al-Baqarah 2:282',ht:'"Worship Allah as though you see Him — He sees you."',hr:'Sahih Bukhari'},
+  {a:'الْقَابِضُ',n:'Al-Qabid',m:'The Withholder',r:'He withholds and expands as He wills. Trust His wisdom in hardship.',ya:'وَاللَّهُ يَقْبِضُ وَيَبْسُطُ',yt:'Allah withholds and grants abundantly.',yr:'Al-Baqarah 2:245',ht:'"Patience at the first strike of calamity is true patience."',hr:'Sahih Bukhari'},
+  {a:'الْبَاسِطُ',n:'Al-Basit',m:'The Expander',r:'He expands provisions and hearts. Ask Al-Basit to expand your rizq and faith.',ya:'رَبِّ اشْرَحْ لِي صَدْرِي',yt:'My Lord, expand for me my chest.',yr:'Ta-Ha 20:25',ht:'"Charity does not decrease wealth."',hr:'Sahih Muslim'},
+  {a:'الْخَافِضُ',n:'Al-Khafid',m:'The Humbler',r:'He humbles the arrogant. Humility in Ramadan opens doors of mercy.',ya:'وَلَا تَمْشِ فِي الْأَرْضِ مَرَحًا',yt:'Do not walk upon the earth exultantly.',yr:'Al-Isra 17:37',ht:'"No one humbles himself for Allah except that Allah raises him."',hr:'Sahih Muslim'},
+  {a:'الرَّافِعُ',n:'Ar-Rafi',m:'The Exalter',r:'He raises who He wills. Sincere worship is the path to elevation.',ya:'يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا',yt:'Allah will raise those who have believed by degrees.',yr:'Al-Mujadila 58:11',ht:'"The one who recites Quran is with the noble righteous scribes."',hr:'Sahih Bukhari'},
+  {a:'الْمُعِزُّ',n:'Al-Muizz',m:'The Honorer',r:'Honor comes from Allah alone. Seek it through obedience.',ya:'مَن كَانَ يُرِيدُ الْعِزَّةَ فَلِلَّهِ الْعِزَّةُ جَمِيعًا',yt:'Whoever desires honor — to Allah belongs all honor.',yr:'Fatir 35:10',ht:'"Modesty is part of faith."',hr:'Sahih Bukhari'},
+  {a:'السَّمِيعُ',n:'As-Sami',m:'The All-Hearing',r:'He hears every whispered dua. No prayer is too small for As-Sami.',ya:'إِنَّهُ سَمِيعٌ قَرِيبٌ',yt:'He is the Hearing, the Near.',yr:'Saba 34:50',ht:'"When you call, call upon Allah alone."',hr:'Sunan at-Tirmidhi'},
+  {a:'الْبَصِيرُ',n:'Al-Basir',m:'The All-Seeing',r:'He sees your sacrifice in fasting. Not a moment of hunger goes unnoticed.',ya:'وَاللَّهُ بَصِيرٌ بِمَا تَعْمَلُونَ',yt:'And Allah is Seeing of what you do.',yr:'Al-Hujurat 49:18',ht:'"Fast, for there is nothing like it."',hr:'Sunan an-Nasai'},
+  {a:'اللَّطِيفُ',n:'Al-Latif',m:'The Subtle, The Kind',r:'He is aware of the finest details of your pain. Al-Latif tends to you gently.',ya:'اللَّهُ لَطِيفٌ بِعِبَادِهِ',yt:'Allah is Kind to His servants.',yr:'Ash-Shura 42:19',ht:'"Allah is gentle and loves gentleness in all affairs."',hr:'Sahih Bukhari'},
+  {a:'الْخَبِيرُ',n:'Al-Khabir',m:'The All-Aware',r:'He knows what is in your heart. Let Ramadan cleanse your intentions.',ya:'إِنَّ اللَّهَ خَبِيرٌ بِمَا تَعْمَلُونَ',yt:'Indeed, Allah is All-Aware of what you do.',yr:'Al-Hujurat 49:13',ht:'"Actions are judged by intentions."',hr:'Sahih Bukhari'},
+  {a:'الْحَلِيمُ',n:'Al-Halim',m:'The Forbearing',r:'He does not rush to punish despite our sins. Respond to His forbearance with gratitude.',ya:'وَاللَّهُ غَفُورٌ حَلِيمٌ',yt:'And Allah is Forgiving and Forbearing.',yr:'Al-Baqarah 2:235',ht:'"The strong person controls himself when angry."',hr:'Sahih Bukhari'},
+  {a:'الْعَظِيمُ',n:'Al-Azim',m:'The Magnificent',r:'His greatness is beyond comprehension. Ayat al-Kursi captures His magnificence.',ya:'وَهُوَ الْعَلِيُّ الْعَظِيمُ',yt:'And He is the Most High, the Most Great.',yr:'Al-Baqarah 2:255',ht:'"The greatest verse in the Quran is Ayat al-Kursi."',hr:'Sahih Muslim'},
+  {a:'النُّورُ',n:'An-Nur',m:'The Light',r:'Laylatul Qadr — when His divine light descends most intensely. Seek it in the last ten nights!',ya:'إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ',yt:'Indeed, We sent it down during the Night of Decree.',yr:'Al-Qadr 97:1',ht:'"Seek Laylat al-Qadr in the odd nights of the last ten days."',hr:'Sahih Bukhari 2017'},
+  {a:'الْوَدُودُ',n:'Al-Wadud',m:'The Loving',r:'He loves those who love Him. Show love through extra worship in these blessed nights.',ya:'وَهُوَ الْغَفُورُ الْوَدُودُ',yt:'And He is the Forgiving, the Affectionate.',yr:'Al-Buruj 85:14',ht:'"Allah loves that when you do something, you do it with excellence."',hr:'Sahih al-Bayhaqi'},
+  {a:'الْحَكِيمُ',n:'Al-Hakim',m:'The Wise',r:'Every trial has wisdom behind it. Trust His plan even when you cannot see it.',ya:'وَعَسَى أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ',yt:'Perhaps you dislike a thing and it is good for you.',yr:'Al-Baqarah 2:216',ht:'"How wonderful is the affair of the believer — all of it is good."',hr:'Sahih Muslim'},
+  {a:'الْكَرِيمُ',n:'Al-Karim',m:'The Generous',r:'His generosity multiplies rewards in Ramadan — every good deed 70x more!',ya:'اقْرَأْ وَرَبُّكَ الْأَكْرَمُ',yt:'Read, and your Lord is the most Generous.',yr:'Al-Alaq 96:3',ht:'"The Prophet was the most generous person, especially in Ramadan."',hr:'Sahih Bukhari'},
+  {a:'الْغَفُورُ',n:'Al-Ghafur',m:'The All-Forgiving',r:'These final days — pour your heart out. Al-Ghafur forgives all sins in Ramadan.',ya:'قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ',yt:'O my servants who have transgressed — do not despair of the mercy of Allah.',yr:'Az-Zumar 39:53',ht:'"Whoever fasts Ramadan with faith, his past sins are forgiven."',hr:'Sahih Bukhari'},
+  {a:'الشَّكُورُ',n:'Ash-Shakur',m:'The Appreciative',r:'He rewards even the smallest acts of gratitude. Every sip of water at iftar is rewarded.',ya:'إِن تَشْكُرُوا يَرْضَهُ لَكُمْ',yt:'If you are grateful, He is pleased with you.',yr:'Az-Zumar 39:7',ht:'"The upper hand is better than the lower — give charity."',hr:'Sahih Bukhari'},
+  {a:'الْعَلِيُّ',n:'Al-Ali',m:'The Most High',r:'He is above all — raise your hands high in dua this last week of Ramadan.',ya:'وَهُوَ الْعَلِيُّ الْكَبِيرُ',yt:'And He is the Most High, the Most Grand.',yr:'Saba 34:23',ht:'"The nearest a servant is to his Lord is in sujud — make much dua."',hr:'Sahih Muslim'},
+  {a:'الْكَبِيرُ',n:'Al-Kabir',m:'The Greatest',r:'Nothing is greater than Allah. End Ramadan knowing you served the Greatest.',ya:'وَكَبِّرْهُ تَكْبِيرًا',yt:'And glorify His greatness.',yr:'Al-Isra 17:111',ht:'"The most beloved words to Allah: SubhanAllah, Alhamdulillah, La ilaha illallah, Allahu Akbar."',hr:'Sahih Muslim'},
+  {a:'الْحَفِيظُ',n:'Al-Hafiz',m:'The Preserver',r:'He preserved the Quran — complete your khatm today!',ya:'إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ',yt:'Indeed, We sent down the Quran and indeed We will be its guardian.',yr:'Al-Hijr 15:9',ht:'"The best of you are those who learn the Quran and teach it."',hr:'Sahih Bukhari'},
+  {a:'التَّوَّابُ',n:'At-Tawwab',m:'Ever-Accepting of Repentance',r:'Last night of Ramadan — make tawbah. At-Tawwab accepts repentance always.',ya:'إِنَّهُ كَانَ تَوَّابًا',yt:'Indeed, He is ever-Accepting of repentance.',yr:'An-Nasr 110:3',ht:'"Allah is more pleased with repentance than one who finds his lost camel."',hr:'Sahih Muslim'},
+];
+
+let insIdx = 0;
+function renderInspire() {
+  const d=INS[insIdx];
+  document.getElementById('insDay').textContent=`Day ${insIdx+1}`;
+  document.getElementById('insAsmaAr').textContent=d.a;
+  document.getElementById('insAsmaName').textContent=d.n;
+  document.getElementById('insAsmaMeaning').textContent=d.m;
+  document.getElementById('insReflection').textContent=d.r;
+  document.getElementById('insAyahAr').textContent=d.ya;
+  document.getElementById('insAyahTr').textContent=d.yt;
+  document.getElementById('insAyahRef').textContent=d.yr;
+  document.getElementById('insHadithTr').textContent=d.ht;
+  document.getElementById('insHadithRef').textContent=`— ${d.hr}`;
+}
+function prevIns(){ if(insIdx>0){insIdx--;renderInspire();} }
+function nextIns(){ if(insIdx<29){insIdx++;renderInspire();} }
+
+// Set inspire to today's roza
+const _todayD=getTodayData();
+if(_todayD){ insIdx=Math.min(_todayD.roza-1,29); }
+
+// ── Journal ───────────────────────────────────────────
+function updateJournalDate() {
+  const td=getTodayData();
+  document.getElementById('jDateLabel').textContent = td ? `Today — Roza ${td.roza} · ${getLocalDateStr()}` : 'Today';
+}
+function saveJournal2() {
+  const text=document.getElementById('jText').value.trim(); if(!text) return;
+  const key=getLocalDateStr();
+  const td=getTodayData();
+  const entries=JSON.parse(lsGet2('j2_entries')||'[]');
+  const ex=entries.findIndex(e=>e.date===key);
+  const entry={date:key,roza:td?.roza||'--',text};
+  if(ex>=0) entries[ex]=entry; else entries.unshift(entry);
+  lsSet2('j2_entries',JSON.stringify(entries));
+  document.getElementById('jText').value='';
+  renderJournal2();
+  toast('✅ Journal entry saved! 📓');
+}
+function renderJournal2() {
+  const entries=JSON.parse(lsGet2('j2_entries')||'[]');
+  const el=document.getElementById('jEntries');
+  if(!entries.length){
+    el.innerHTML='<div style="text-align:center;color:rgba(245,234,208,0.3);font-size:12px;padding:16px">No entries yet. Start writing! 🌙</div>';
+    return;
+  }
+  el.innerHTML=entries.map(e=>`<div class="j-entry"><div class="j-entry-date">🌙 Roza ${e.roza} · ${e.date}</div><div class="j-entry-text">${e.text}</div></div>`).join('');
+}
+updateJournalDate();
+
+// ── PWA Install Popup ─────────────────────────────────
+let _deferredPrompt=null;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isInStandalone=window.matchMedia('(display-mode: standalone)').matches;
+
+if(!isInStandalone) {
+  if(isIOS) {
+    // Show iOS instructions after 3 seconds
+    setTimeout(()=>{
+      document.getElementById('pwaSteps').innerHTML=`
+        <div class="pwa-step"><div class="pwa-step-num">1</div><span>Neeche Safari Share button dabao 📤</span></div>
+        <div class="pwa-step"><div class="pwa-step-num">2</div><span>"Add to Home Screen" select karo 📲</span></div>
+        <div class="pwa-step"><div class="pwa-step-num">3</div><span>"Add" tap karo — ho gaya! ✅</span></div>
+      `;
+      document.getElementById('pwaInstallBtn').textContent='📲 How to Install on iPhone';
+      document.getElementById('pwaInstallBtn').onclick=()=>closePwa();
+      document.getElementById('pwaPopup').classList.add('show');
+    }, 3000);
+  }
+}
+
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); _deferredPrompt=e;
+  setTimeout(()=>{
+    document.getElementById('pwaInstallBtn').textContent='📥 Install App Now';
+    document.getElementById('pwaSteps').innerHTML=`
+      <div class="pwa-step"><div class="pwa-step-num">✓</div><span>Yeh app install ho sakti hai!</span></div>
+      <div class="pwa-step"><div class="pwa-step-num">✓</div><span>Home screen pe app icon milega</span></div>
+      <div class="pwa-step"><div class="pwa-step-num">✓</div><span>Offline bhi kaam karega!</span></div>
+    `;
+    document.getElementById('pwaPopup').classList.add('show');
+  }, 2000);
+});
+
+function doPwaInstall(){
+  if(_deferredPrompt){
+    _deferredPrompt.prompt();
+    _deferredPrompt.userChoice.then(r=>{
+      if(r.outcome==='accepted'){ toast('✅ App installed! Home screen pe dekho!'); }
+      _deferredPrompt=null; closePwa();
+    });
+  } else { closePwa(); }
+}
+function closePwa(){ document.getElementById('pwaPopup').classList.remove('show'); }
+window.addEventListener('appinstalled',()=>{ closePwa(); toast('✅ App installed! 🌙'); });
 
 </script>
 </body>
